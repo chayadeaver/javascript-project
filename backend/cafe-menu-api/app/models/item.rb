@@ -1,4 +1,3 @@
 class Item < ApplicationRecord
-  has_one_attached :image_url
-  belongs_to :menu
+  belongs_to :menu, optional: true
 end
