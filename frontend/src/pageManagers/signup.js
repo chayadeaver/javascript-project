@@ -1,12 +1,29 @@
-class SignupPage{
-  constructor(container) {
-    this.container = container
+class SignupPage extends PageManager{
+  
+  initBindingsAndEventListeners() {
+    this.form = this.container.querySelector('#signup-form')
+
+    this.form.addEventListener('submit', this.handleSubmit.bind(this))
   }
+
+  handleSubmit(e) {
+    e.preventDefault()
+    const inputs = Array.from(e.target.querySelectorAll("input"))
+    const [name, email, password] = inputs.map(input => input.value)
+    const params = {
+      user: {
+        name, email, password
+      }
+    }
+    this.adapter.signup(params)
+  }
+
+
 
   get staticHTML() {
     return `
     <h2>Signup</h2>
-    <form>
+    <form id="signup-form">
   <div class="form-row">
   <div class="form-group col-md-6">
       <label for="name">Name</label>
@@ -26,8 +43,5 @@ class SignupPage{
 </form>`
   }
 
-  render(){
-    this.container.innerHTML = this.staticHTML
-  }
 
 }
