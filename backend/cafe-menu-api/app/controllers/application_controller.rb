@@ -4,6 +4,7 @@ class ApplicationController < ActionController::API
   rescue_from AuthorizationError, with: :unauthorized_error
 
   before_action :current_cart
+  before_action :configure_permitted_parameters, if: :devise_controller?
 
   def render_resource(resource)
     if resource.errors.empty?
@@ -55,4 +56,10 @@ class ApplicationController < ActionController::API
       session[:cart_id] = @current_cart.id
     end
   end
+
+  protected
+
+    def configure_permitted_parameters
+      devise_parameter_sanitizer.permit(:sign_up, keys: [:name])
+    end
 end
